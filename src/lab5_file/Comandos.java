@@ -90,6 +90,72 @@ public class Comandos {
             }
         }
     }
+    private static boolean borrarCarpeta(File carpeta) {
+        File[] hijos = carpeta.listFiles();
+        if(hijos != null) {
+            for(File f : hijos) {
+                if(f.isDirectory()) {
+                    if(!borrarCarpeta(f)) {
+                        return false;
+                    }
+                } else {
+                    if(!f.delete()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return carpeta.delete();
+    }
     
+    private static String listar(File base) {
+        if(!base.isDirectory()) {
+            return "Accion no permitida.";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Folder: ").append(base.getName()).append("\n");
+        File[] hijos = base.listFiles();
+        int dirs = 0;
+        long bytes = 0;
+        if(hijos != null) {
+            for(File f : hijos) {
+                if(f.isDirectory()) {
+                    dirs++;
+                    sb.append("<DIR> ").append(f.getName()).append("\n");
+                } else {
+                    bytes += f.length();
+                    sb.append(f.length()).append(" bytes ").append(f.getName()).append("\n");
+                }
+            }
+        }
+        sb.append(bytes).append(" bytes en archivos\n");
+        sb.append(dirs).append(" dirs\n");
+        return sb.toString();
+    }
+    
+    private static String obtenerFecha() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return "Fecha: " + sdf.format(new Date());
+    }
+    
+    private static String obtenerHora() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        return "Hora: " + sdf.format(new Date());
+    }
+    
+    private static String leerArchivo(String nombre, File base) {
+        File archivo = new File(base, nombre);
+        if(!archivo.exists()) return "Archivo no encontrado.";
+        StringBuilder sb = new StringBuilder();
+        try(BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while((linea = br.readLine()) != null) {
+                sb.append(linea).append("\n");
+            }
+        } catch(IOException ex) {
+            return "Error: " + ex.getMessage();
+        }
+        return sb.toString();
+    }
     
 }
