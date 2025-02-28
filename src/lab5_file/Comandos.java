@@ -44,10 +44,13 @@ public class Comandos {
                 parametro = comando.substring(5).trim();
             }
             return leerArchivo(parametro, directorioActual);
-        } else {
-            return "\"" + comando + "\" no se reconoce como un comando interno o externo,\nprograma o archivo por lotes ejecutable.";
+        }  else if(cmd.startsWith("wr") || cmd.startsWith("escribir")) {
+            return "wrdetectado";
         }
+        
+        return "";
     }
+    
     
     private static String crearCarpeta(String nombre, File base) {
         File carpeta = new File(base, nombre);
