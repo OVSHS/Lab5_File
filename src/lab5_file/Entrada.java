@@ -6,8 +6,8 @@ package lab5_file;
 
 /**
  *
- * @author Mario
+ * @author Maria Gabriela
  */
-public class Comandos {
-    // comandos utilizados para funciones requeridas
+public class Entrada {
+    // actualiza directorio
 }
