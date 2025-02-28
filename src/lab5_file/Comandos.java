@@ -110,27 +110,30 @@ public class Comandos {
     
     private static String listar(File base) {
         if(!base.isDirectory()) {
-            return "Accion no permitida.";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("Folder: ").append(base.getName()).append("\n");
-        File[] hijos = base.listFiles();
-        int dirs = 0;
-        long bytes = 0;
-        if(hijos != null) {
-            for(File f : hijos) {
-                if(f.isDirectory()) {
-                    dirs++;
-                    sb.append("<DIR> ").append(f.getName()).append("\n");
-                } else {
-                    bytes += f.length();
-                    sb.append(f.length()).append(" bytes ").append(f.getName()).append("\n");
-                }
+        return "Accion no permitida.";
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append("Contenido de ").append(base.getAbsolutePath()).append(":\n");
+    File[] hijos = base.listFiles();
+    int numDirs = 0;
+    int numFiles = 0;
+    long totalBytes = 0;
+    if(hijos != null) {
+        for(File f : hijos) {
+            if(f.isDirectory()) {
+                numDirs++;
+                sb.append("Carpeta: ").append(f.getName()).append("\n");
+            } else {
+                numFiles++;
+                totalBytes += f.length();
+                sb.append("Archivo: ").append(f.getName()).append(" (").append(f.length()).append(" bytes)").append("\n");
             }
         }
-        sb.append(bytes).append(" bytes en archivos\n");
-        sb.append(dirs).append(" dirs\n");
-        return sb.toString();
+    }
+    sb.append(totalBytes).append(" bytes en archivos\n");
+    sb.append(numDirs).append(" carpetas\n");
+    sb.append(numFiles).append(" archivos\n");
+    return sb.toString();
     }
     
     private static String obtenerFecha() {
