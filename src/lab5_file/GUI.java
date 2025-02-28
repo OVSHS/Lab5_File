@@ -40,7 +40,7 @@ public class GUI extends JFrame {
                 }
                 if(e.getKeyCode()==KeyEvent.VK_ENTER) {
                     e.consume();
-                    //agregar para procesar entrada
+                    procesarEntrada();
                 }
             }
         });
@@ -56,7 +56,19 @@ public class GUI extends JFrame {
         inicioEntrada = areaSalida.getDocument().getLength();
         areaSalida.setCaretPosition(inicioEntrada);
     }
-    //falta agregar para que procese entrada
+    private void procesarEntrada() {
+        try {
+            String textoCompleto = areaSalida.getText();
+            String comando = textoCompleto.substring(inicioEntrada).trim();
+            areaSalida.append("\n");
+            String resultado = Comandos.ejecutar(comando, directorioActual);
+            areaSalida.append(resultado + "\n");
+            directorioActual = Entrada.actualizarDirectorio(comando, directorioActual, areaSalida);
+            imprimirPrompt();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     
 }
